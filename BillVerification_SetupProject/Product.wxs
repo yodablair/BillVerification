@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  
+	<Product Id="*" Name="BillVerification" Language="1033" Version="!(bind.FileVersion.BillVerificationEXE)" Manufacturer="Liquid Telecommunications" UpgradeCode="c4c44530-69c8-4a7c-a8ef-26998b810ed6">
+		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<MediaTemplate EmbedCab="yes" />
+		<!--<Feature Id="ProductFeature" Title="BillVerification_SetupProject" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>-->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    <Upgrade Id="9D9B07CC-C861-40BC-9C44-0921F6DDA34E">
+      <UpgradeVersion
+         Minimum="1.0.0.0" Maximum="99.0.0.0"
+         Property="PREVIOUSVERSIONSINSTALLED"
+         IncludeMinimum="yes" IncludeMaximum="no" />
+    </Upgrade>
+    <Icon Id="BillVerification_WPF.exe" SourceFile="$(var.BillVerification_WPF.TargetDir)BillVerification_WPF.exe" />
+  
+  
+  <!--<Fragment>
+    <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK40]]>
+    </Condition>
+  </Fragment>-->
+  
+	<!--<Fragment>-->
+		<Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="INSTALLLOCATION" Name="Liquid">
+        <Directory Id="BillVerification" Name="BillVerification">
+          <Component Id="MainExecutable" Guid="7E8A16D2-1E18-4484-BE82-92B19AB84DB1">
+            <File Id="BillVerificationEXE" Name="BillVerification_WPF.exe" Source="$(var.BillVerification_WPF.TargetDir)BillVerification_WPF.exe" DiskId="1" KeyPath="yes">
+              <Shortcut Id="StartMenuBillVerificationEXE" Directory="ProgramMenuDir" Name="BillVerification" WorkingDirectory="INSTALLDIR" Icon="BillVerification_WPF.exe" IconIndex="0" Advertise="yes" />
+            </File>
+            <!--<File Id="BillVerificationICO" Source="$(var.BillVerification_WPF.TargetDir)BillVerification_WPF.ico" DiskId="1" KeyPath="no" />-->
+            <File Id="BillVerificationPDB" Source="$(var.BillVerification_WPF.TargetDir)BillVerification_WPF.pdb" DiskId="1" KeyPath="no" />
+            <File Id="EPPlusDLL" Source="$(var.BillVerification_WPF.TargetDir)EPPlus.dll" DiskId="1" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="BillVerification">
+          <Component Id="ProgramMenuDir" Guid="61175BD7-614D-4A0A-AECE-884419B8CF5D">
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <RegistryValue Root='HKCU' Key='Software\Liquid\BillVerification' Type='string' Value='' KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+	<!--</Fragment>-->
+    
+    <Feature Id="Complete" Title="BillVerification" Description="BillVerification Setup" Display="expand"
+                 ConfigurableDirectory="INSTALLLOCATION" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="ProgramMenuDir" />
+    </Feature>
+ <!--
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Guid="0DEA4B30-1B58-43FD-A1FF-FE01B908638B">
+        <File Source="$(var.BillVerification_WPF.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component>
+        <File Id="BillVerification_WPF.Output" Name="$(var.BillVerification_WPF.TargetFileName)" Source="$(var.BillVerification_WPF.TargetPath)" KeyPath="yes" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>-->
+  </Product>
+</Wix>
